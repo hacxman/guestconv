@@ -16,6 +16,7 @@
         <newdisk name='sda' replace='sda' pt='GPT' align='1048576'>
             <partition type='xxx-xxx-xxx-xx' source='sda' resize='10737418240'/>
         </newdisk>
+        <hypervizor src='kvm' dest='xen' />
         <!--
              <align disk='sda' boundary='1048576'/>
         -->
