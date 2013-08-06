@@ -1,4 +1,5 @@
 # coding: utf-8
+# vim: tabstop=4 shiftwidth=4 softtabstop=4
 # guestconv
 #
 # Copyright (C) 2013 Red Hat Inc.
@@ -99,11 +100,11 @@ class Converter(object):
         convert.  Multiple drives may be added.  <-- TODO correct?
 
         :param path: path to the image
-        :param hint: TODO significance of hint?
+        :param hint: optional, use hint as drive name
 
         """
         if hint:
-            self._h.add_drive(path, name=path)
+            self._h.add_drive(path, name=hint)
         else:
             self._h.add_drive(path)
 
@@ -121,7 +122,11 @@ class Converter(object):
 
         h = self._h
 
-        h.launch()
+        if h.is_config():
+            # launch() cannot be called twice.
+            # so we need to chceck for object state.
+            h.launch()
+
         guestfs_roots = h.inspect_os()
 
         bootloaders = {}
@@ -161,7 +166,6 @@ class Converter(object):
                         builder.end(name)
                 build_info(root_info)
                 builder.end(u'info')
-
                 builder.start(u'options', {})
                 for option in root_options:
                     attrs = {
